@@ -1,4 +1,4 @@
-﻿#include <vector>
+#include <vector>
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -7,14 +7,14 @@
 
 class Array {
 private:
-	int sizeArray, menuCountItem, sizeCreatedArray;
+	int sizeArray, menuCountItem, sizeCreatedArray, valueFromFile;
 	char save[1];
 	std::ofstream arraySaveFile;
 	std::ifstream arrayOpenFile;
 	std::string valueArrayFromFile;
 public:
 	int menuChoice;
-	std::vector < int > tablica;
+	std::vector <	 int > tablica;
 	Array() {
 		tablica.clear();
 		return;
@@ -52,17 +52,18 @@ public:
 	void generate() {
 		srand(time(NULL));
 		system("cls");
+		tablica.clear();
 		do {
 			std::cout << "==========[GENEREATE ARRAY]=========" << std::endl;
 			std::cout << "Size: ";
 			std::cin >> sizeCreatedArray;
-			if (std::cin.fail()) {
+			if (std::cin.fail() || sizeCreatedArray <= 0) {
 				system("cls");
 				std::cin.clear();
 				std::cin.ignore();
 				generate();
 			}
-		} while (std::cin.fail() && sizeCreatedArray < 0);
+		} while (std::cin.fail() || sizeCreatedArray <= 0);
 		for (int i = 0; i < sizeCreatedArray; i++) {
 			tablica.push_back(rand() % 100);
 			std::cout << tablica[i] << " ";
@@ -78,7 +79,7 @@ public:
 			saveArray();
 		}
 		else if (save[0] == 'n') {
-			menu();
+			return;
 		}
 		std::cout << "Genereted array size is [" << sizeCreatedArray << "]: ";
 		
@@ -112,6 +113,7 @@ public:
 			}
 			sizeTemp = sizeTemp - 1;
 		} while (sizeTemp > 1);
+		printArray();
 		return;
 	}
 	void saveArray() {
@@ -120,7 +122,7 @@ public:
 
 		for (int i = 0; i < tablica.size(); i++) {
 			arraySaveFile << tablica[i];
-			if (i < sizeArray - 1) {
+			if (i < tablica.size() - 1) {
 				arraySaveFile << "\n";
 			}
 		}
@@ -147,8 +149,8 @@ public:
 		}
 		else {
 			std::cout << "NO FILLE!" << std::endl;
+			system("pause");
 		}
-		system("pause");
 		return;
 	}
 	void maximumValue() {
